@@ -1,0 +1,46 @@
+create database tawakalna;
+create table countries(
+code int primary key ,
+name varchar(20) not null unique
+);
+create table users(
+    id varchar(10) primary key ,
+    full_name varchar(20) not null ,
+    phone_number varchar(20) not null unique ,
+    password varchar(20) not null ,
+    visa_status varchar(8) not null check ( visa_status = 'Resident' or visa_status = 'Citizen' )
+);
+create table profile(
+    id varchar(10) primary key ,
+    city varchar(20) not null ,
+    postal_code varchar(5) not null  ,
+    street_address varchar(100) not null ,
+    country_code int,
+    foreign key (country_code) references countries (code),
+    user_id varchar(10),
+    foreign key (user_id) references users (id)
+);
+create table services(
+    id varchar(10) primary key ,
+    name varchar(20) not null ,
+    category varchar(20) not null check ( category = 'Health' or category = 'Profession' or category= 'Education' or category = 'Report Services' ) ,
+    user_id varchar(10),
+    foreign key (user_id) references users (id)
+);
+create table digital_documents(
+    id varchar(20) primary key ,
+    name varchar(20) not null ,
+    issue_date datetime not null ,
+    expiry_date datetime not null ,
+    user_id varchar(10),
+    foreign key (user_id) references users (id)
+);
+insert into countries values (966,'Saudi Arabia');
+insert into countries values (963,'Syria');
+insert into users values ('123','Areej Abdulaziz',0555555555,'Arrr00','Citizen');
+insert into users values ('456','Sara Abdulaziz',0544444444,'fff999','Citizen');
+insert into profile values ('123','Riyadh','555','street address 1 for example',966,'123');
+insert into services values ('1','health status','Health','123');
+insert into digital_documents values ('123456','Driving License','2023/11/1','2026/11/1','123');
+update countries set code=961,name='Lebanon' where code=963;
+delete from users where id='456';
